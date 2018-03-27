@@ -131,3 +131,8 @@ different_architectures_2l <- lapply(c(4, 8, 32), function(number_of_units)
   ) %>% do.call(rbind, .)
 ) %>% do.call(rbind, .)
 
+
+ggplot(different_architectures_2l, 
+       aes(x = factor(number_of_units), color = optimizer, y = acc)) +
+  geom_boxplot() + 
+  facet_wrap(~ number_of_units2l)
