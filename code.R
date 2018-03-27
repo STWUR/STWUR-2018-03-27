@@ -122,6 +122,7 @@ different_architectures_2l <- lapply(c(4, 8, 32, 64), function(number_of_units)
         score <- model %>% evaluate(dat[["features_eval"]], dat[["target_eval"]], batch_size = 128) 
         
         data.frame(number_of_units = number_of_units,
+                   number_of_units2l = number_of_units2l,
                    loss_function = loss_function,
                    replicate = replicate,
                    acc = score[["acc"]])
