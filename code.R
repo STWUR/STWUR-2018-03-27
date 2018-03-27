@@ -95,9 +95,9 @@ ggplot(different_architectures,
 
 # architektura sieci - 2 layers
 
-different_architectures_2l <- lapply(c(4, 8, 32, 64), function(number_of_units) 
-  lapply(c(4, 8, 32, 64), function(number_of_units2l) 
-    lapply(c("binary_crossentropy", "mean_squared_error"), function(loss_function) 
+different_architectures_2l <- lapply(c(4, 8, 32), function(number_of_units) 
+  lapply(c(4, 8, 32), function(number_of_units2l) 
+    lapply(c("sgd", "rmsprop"), function(optimizer) 
       lapply(1L:3, function(replicate) {
         model <- keras_model_sequential()
         
@@ -108,8 +108,8 @@ different_architectures_2l <- lapply(c(4, 8, 32, 64), function(number_of_units)
           layer_dropout(rate = 0.5) %>%
           layer_dense(units = 1, activation = "sigmoid") %>% 
           compile(
-            loss = loss_function,
-            optimizer = "sgd",
+            loss = "binary_crossentropy",
+            optimizer = optimizer,
             metrics = c("accuracy")
           )
         
@@ -123,7 +123,7 @@ different_architectures_2l <- lapply(c(4, 8, 32, 64), function(number_of_units)
         
         data.frame(number_of_units = number_of_units,
                    number_of_units2l = number_of_units2l,
-                   loss_function = loss_function,
+                   optimizer = optimizer,
                    replicate = replicate,
                    acc = score[["acc"]])
       }) %>% do.call(rbind, .)
